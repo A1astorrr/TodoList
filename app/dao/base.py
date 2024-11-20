@@ -32,6 +32,8 @@ class BaseDAO:
             session.add(added)
             await session.commit()
             return added
+        
+        
     @classmethod
     async def update(cls, todo_id: int, **data):
         async with async_session() as session:

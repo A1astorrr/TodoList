@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from app.todo.crud import TodoDAO
-from app.todo.schemas import Todo, TodoBase, TodoCreate, TodoUpdate
+from app.todo.schemas import Todo, TodoBase, TodoCreate, TodoUpdate, TodoUpdatePart
 from app.exceptions import (
     TodoByIdNotFound,
     TodoCreated,
@@ -48,6 +48,16 @@ async def update_todo(todo_id: int, todo_update: TodoUpdate):
     if updated is None:
         raise TodoNotUpdate
     raise TodoUpdated
+
+@router.patch("/{todo_id}")
+async def update_todo_part(todo_id: int, todo_update_part: TodoUpdatePart):
+    updated = await TodoDAO.update(
+        todo_id, **todo_update_part.model_dump(exclude_unset=True)
+    )
+    if updated is None:
+        raise TodoNotUpdate
+    raise TodoUpdated
+
 
 @router.delete("/{todo_id}")
 async def delete_todo(todo_id: int):

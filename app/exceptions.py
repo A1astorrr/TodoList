@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 
 TodoByIdNotFound = HTTPException(
-    status_code=status.HTTP_404_NOT_FOUND, detail="Запись по данному id не найдена"
+    status_code=status.HTTP_404_NOT_FOUND, detail="Запись не найдена"
 )
 
 TodoNotCreated = HTTPException(
@@ -11,11 +11,11 @@ TodoNotCreated = HTTPException(
 
 TodoNotUpdate = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND,
-    detail="Запись не обновлена.",
+    detail="Запись не обновлена",
 )
 
 NotDeletedById = HTTPException(
-    status_code=status.HTTP_404_NOT_FOUND, detail="Запись с таким id не найден"
+    status_code=status.HTTP_404_NOT_FOUND, detail="Запись  не найден"
 )
 
 TodoCreated = HTTPException(
@@ -23,7 +23,7 @@ TodoCreated = HTTPException(
 )
 
 TodoUpdated = HTTPException(
-    status_code=status.HTTP_202_ACCEPTED, detail="Запись редактирована"
+    status_code=status.HTTP_202_ACCEPTED, detail="Запись обновлена"
 )
 
 TodoDeleted = HTTPException(status_code=status.HTTP_200_OK, detail="Запись удалена")
