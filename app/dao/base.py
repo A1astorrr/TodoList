@@ -6,7 +6,7 @@ class BaseDAO:
     model =  Base
     
     @classmethod
-    async def find_by_id(cls, todo_id: int):
+    async def get_todo(cls, todo_id: int):
         async with async_session() as session:
             query = select(cls.model).filter_by(id=todo_id)
             result = await session.execute(query)
@@ -14,14 +14,14 @@ class BaseDAO:
     
         
     @classmethod
-    async def find_all(cls, **filter_by):
+    async def get_todos(cls, **filter_by):
         async with async_session() as session:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             return result.scalars().all()
         
     @classmethod
-    async def find_one_or_none(cls, **filter_by):
+    async def get_todo_or_none(cls, **filter_by):
         async with async_session() as session:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
@@ -30,20 +30,32 @@ class BaseDAO:
     @classmethod
     async def add(cls, **data):
         async with async_session() as session:
-            todo_add = cls.model(**data)
-            session.add(todo_add)
+            added = cls.model(**data)
+            session.add(added)
             query = insert(cls.model).values(**data)
             await session.execute(query)
             await session.commit()
-            return todo_add
+            return added
+    @classmethod
+    async def update(cls, todo_id: int, **data):
+        async with async_session() as session:
+            updated  = await cls.get_todo(todo_id)
+            if updated is None:
+                return None
+            for key, value in data.items():
+                setattr(updated, key, value)
+                
+            session.add(updated)
+            await session.commit()
+            return updated
         
     @classmethod
     async def delete(cls, **filter_by):
         async with async_session() as session:
-            todo_delete =  await cls.find_one_or_none(**filter_by)
-            if todo_delete is None:
+            deleted =  await cls.get_todo_or_none(**filter_by)
+            if deleted is None:
                 return None
             query = delete(cls.model).filter_by(**filter_by)
             await session.execute(query)
             await session.commit()
-            return todo_delete
+            return deleted
