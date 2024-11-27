@@ -8,8 +8,7 @@ __pycache__/
 .vscode
 .idea
 
-#db stuff
-.notes.db
+
 
 #tailwind ignore
 node_modules/

@@ -1,0 +1,19 @@
+# Python stuff
+venv/
+.pylintrc
+__pycache__/
+
+# IDE stuff
+.vscode/
+.idea/
+
+
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Git files
+.git/
+.gitignore

@@ -10,6 +10,7 @@ from app.exceptions import (
     TodoUpdated,
     NotDeletedById,
 )
+from typing import Annotated
 
 
 router = APIRouter(
@@ -33,7 +34,7 @@ async def get_todo(todo_id: int):
 
 
 @router.post("/", response_model=Todo)
-async def create_todo(todo: TodoCreate):
+async def create_todo(todo: Annotated[TodoCreate, Depends()]):
     created = await TodoDAO.add(**todo.model_dump())
     if created is None:
         raise TodoNotCreated
@@ -41,7 +42,7 @@ async def create_todo(todo: TodoCreate):
 
 
 @router.put("/{todo_id}")
-async def update_todo(todo_id: int, todo_update: TodoUpdate):
+async def update_todo(todo_id: int, todo_update: Annotated[TodoUpdate, Depends()]):
     updated = await TodoDAO.update(
         todo_id, **todo_update.model_dump(exclude_unset=True)
     )
@@ -50,7 +51,7 @@ async def update_todo(todo_id: int, todo_update: TodoUpdate):
     raise TodoUpdated
 
 @router.patch("/{todo_id}")
-async def update_todo_part(todo_id: int, todo_update_part: TodoUpdatePart):
+async def update_todo_part(todo_id: int, todo_update_part: Annotated[TodoUpdatePart, Depends()]):
     updated = await TodoDAO.update(
         todo_id, **todo_update_part.model_dump(exclude_unset=True)
     )
