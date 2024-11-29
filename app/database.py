@@ -4,9 +4,7 @@ from app.config import settings
 
 engine = create_async_engine(
     url=settings.DATABASE_URL,
-    echo=False,  # при true позволяет видеть все запросы в консоли
-    # pool_size=5, # кол-во подключений к бд
-    # max_overflow=10, # доп. слоты для подключения
+    echo=False,
 )
 
 async_session = async_sessionmaker(

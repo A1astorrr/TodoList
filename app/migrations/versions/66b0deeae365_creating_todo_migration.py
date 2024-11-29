@@ -1,8 +1,8 @@
-"""First migration
+"""Creating todo migration
 
-Revision ID: aff586e1acb0
+Revision ID: 66b0deeae365
 Revises: 
-Create Date: 2024-11-20 15:31:09.964193
+Create Date: 2024-11-27 14:24:13.836719
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'aff586e1acb0'
+revision: str = '66b0deeae365'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None

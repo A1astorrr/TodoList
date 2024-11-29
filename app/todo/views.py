@@ -1,13 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from app.todo.crud import TodoDAO
-from app.todo.schemas import Todo, TodoBase, TodoCreate, TodoUpdate, TodoUpdatePart
+from app.todo.schemas import Todo,  TodoCreate, TodoUpdate, TodoUpdatePart
 from app.exceptions import (
     TodoByIdNotFound,
-    TodoCreated,
-    TodoDeleted,
     TodoNotCreated,
     TodoNotUpdate,
-    TodoUpdated,
     NotDeletedById,
 )
 from typing import Annotated
@@ -38,7 +35,7 @@ async def create_todo(todo: Annotated[TodoCreate, Depends()]):
     created = await TodoDAO.add(**todo.model_dump())
     if created is None:
         raise TodoNotCreated
-    raise TodoCreated
+    return created
 
 
 @router.put("/{todo_id}")
@@ -48,7 +45,7 @@ async def update_todo(todo_id: int, todo_update: Annotated[TodoUpdate, Depends()
     )
     if updated is None:
         raise TodoNotUpdate
-    raise TodoUpdated
+    return {"detail": "Запись успешно обновлен."}
 
 @router.patch("/{todo_id}")
 async def update_todo_part(todo_id: int, todo_update_part: Annotated[TodoUpdatePart, Depends()]):
@@ -57,7 +54,7 @@ async def update_todo_part(todo_id: int, todo_update_part: Annotated[TodoUpdateP
     )
     if updated is None:
         raise TodoNotUpdate
-    raise TodoUpdated
+    return {"detail": "Запись успешно обновлен."}
 
 
 @router.delete("/{todo_id}")
@@ -65,4 +62,4 @@ async def delete_todo(todo_id: int):
     deleted = await TodoDAO.delete(id=todo_id)
     if deleted is None:
         raise NotDeletedById
-    raise TodoDeleted
+    return {"detail": "Запись успешно удалена."}
